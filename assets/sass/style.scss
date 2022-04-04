@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit&display=swap");
+
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+  }
+
+// live-map.html
+#map {
+    height: 375px;
+}
+
+.map {
+    h1 {
+        text-align: center;
+    }
+    h1 {
+        text-transform: uppercase;
+    }
+
+    &__container {
+        img:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__infos {
+        padding: 10px;
+        h2 {
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+        &__row {
+            display: flex;
+        }
+        p {
+            text-decoration: underline;
+            margin-right: 5px;
+        }
+    }
+}

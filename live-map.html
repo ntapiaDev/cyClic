@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/normalize.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <link rel="stylesheet" href="./assets/css/style.css">
+   <script src="https://kit.fontawesome.com/015d178d74.js" crossorigin="anonymous"></script>
+    <title>Mon site Cy'clic !</title>
+</head>
+<body>
+    <header></header>
+
+    <main class="map">
+        <section class="map__container">
+            <h1>Carte interactive :</h1>
+            <div id="map"></div>
+        </section>
+        <section class="map__infos">
+            <h2 class="map__infos__name">Choisissez votre station</h2>
+            <div class="map__infos__row">
+                <p>Numéro de la station :</p><span class="map__infos__number"></span>
+            </div>
+            <!-- <div class="map__infos__row">
+                <p>Adresse :</p><span class="map__infos__address"></span>
+            </div> -->
+            <div class="map__infos__row">
+                <p>Vélos disponibles :</p><span class="map__infos__available-bikes"></span>
+            </div>
+            <div class="map__infos__row">
+                <p>Places disponibles :</p><span class="map__infos__available-stands"></span>
+            </div>
+            <div class="map__infos__row">
+                <p>Places totales :</p><span class="map__infos__total-stands"></span>
+            </div>
+            <div class="map__infos__row">
+                <p>Borne de paiement :</p><span class="map__infos__banking"></span>
+            </div>
+            <div class="map__infos__row">
+                <p>Statut :</p><span class="map__infos__status"></span>
+            </div>
+            <div class="map__infos__row">
+                <p>Dernière mise à jour :</p><span class="map__infos__update"></span>
+            </div>
+        </section>
+    </main>
+
+    <footer></footer>
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+    <script src="./assets/js/map.js"></script>
+    <script src="./assets/js/app.js"></script>
+</body>
+</html>
