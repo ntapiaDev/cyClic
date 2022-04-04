@@ -35,12 +35,22 @@ body {
             margin: 0 0 10px 0;
             text-align: center;
         }
+        &__container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
         &__row {
             display: flex;
         }
         p {
             text-decoration: underline;
             margin-right: 5px;
+        }
+
+        // Bouton de réservation
+        #book {
+            padding: 25px;
         }
     }
 }

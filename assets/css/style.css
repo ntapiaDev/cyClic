@@ -35,6 +35,18 @@ body {
   text-align: center;
 }
 
+.map__infos__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
 .map__infos__row {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -44,5 +56,9 @@ body {
 .map__infos p {
   text-decoration: underline;
   margin-right: 5px;
+}
+
+.map__infos #book {
+  padding: 25px;
 }
 /*# sourceMappingURL=style.css.map */
