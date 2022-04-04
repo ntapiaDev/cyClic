@@ -43,13 +43,35 @@ function callAPI() {
 
             // Création du marker
             let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng]);
+            console.log(marker);
+            marker.addEventListener('click', showInfos)
 
             let station = new Station(apiResults[i].name, apiResults[i].number, apiResults[i].address, apiResults[i].available_bikes, apiResults[i].available_bike_stands, apiResults[i].bike_stands, banking, apiResults[i].status, update, marker);
             stations.push(station);
             markersCluster.addLayer(stations[i].marker);
             map.addLayer(markersCluster);
+
+            function showInfos() {
+                document.querySelector('.map__infos__name').textContent = station.name.split('-')[1];
+                document.querySelector('.map__infos__number').textContent = station.number;
+                // document.querySelector('.map__infos__address').textContent = station.address;
+                document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
+                document.querySelector('.map__infos__available-stands').textContent = station.availableStands;
+                document.querySelector('.map__infos__total-stands').textContent = station.totalStands;
+                document.querySelector('.map__infos__banking').textContent = station.banking;
+                // Affichage du statut en couleur
+                if (station.status === "OPEN") {
+                    document.querySelector('.map__infos__status').textContent = 'Ouvert';
+                    document.querySelector('.map__infos__status').style.color = '#4BB543';
+                } else {
+                    document.querySelector('.map__infos__status').textContent = 'Fermé';
+                    document.querySelector('.map__infos__status').style.color = '#ff3333';
+                }
+                document.querySelector('.map__infos__update').textContent = station.update;
+            }
             
-            let icons = document.querySelectorAll(".leaflet-marker-icon"); --> cibler les marqueurs !
+            // let icons = document.querySelectorAll(".leaflet-marker-icon");
+
             // if (apiResults[i].available_bikes > 9) {
             //     icons[i].src = "./assets/img/marker-icon-green.png";
             // } else if (apiResults[i].available_bikes > 4) {
@@ -59,29 +81,6 @@ function callAPI() {
             // } else {
             //     icons[i].src = "./assets/img/marker-icon-black.png";
             // }
-
-            // Affichage des données
-            // icons[i].addEventListener('click', function() {
-
-            //     let station = new Station(apiResults[i].name, apiResults[i].number, apiResults[i].address, apiResults[i].available_bikes, apiResults[i].available_bike_stands, apiResults[i].bike_stands, banking, apiResults[i].status, update);
-
-            //     document.querySelector('.map__infos__name').textContent = station.name.split('-')[1];
-            //     document.querySelector('.map__infos__number').textContent = station.number;
-            //     // document.querySelector('.map__infos__address').textContent = station.address;
-            //     document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
-            //     document.querySelector('.map__infos__available-stands').textContent = station.availableStands;
-            //     document.querySelector('.map__infos__total-stands').textContent = station.totalStands;
-            //     document.querySelector('.map__infos__banking').textContent = station.banking;
-            //     // Affichage du statut en couleur
-            //     if (station.status === "OPEN") {
-            //         document.querySelector('.map__infos__status').textContent = 'Ouvert';
-            //         document.querySelector('.map__infos__status').style.color = '#4BB543';
-            //     } else {
-            //         document.querySelector('.map__infos__status').textContent = 'Fermé';
-            //         document.querySelector('.map__infos__status').style.color = '#ff3333';
-            //     }
-            //     document.querySelector('.map__infos__update').textContent = station.update;
-            // })
         }
     })
 }
