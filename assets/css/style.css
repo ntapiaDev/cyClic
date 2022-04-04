@@ -59,6 +59,7 @@ body {
 }
 
 .map__infos #book {
-  padding: 25px;
+  width: 120px;
+  height: 75px;
 }
 /*# sourceMappingURL=style.css.map */

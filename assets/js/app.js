@@ -3,10 +3,10 @@ const APIKEY = 'ddc4d27d871e2930d9a8a37809fcb73cefb6bbf6';
 const city = 'Rouen';
 
 class Station {
-    constructor(name, number, address, availableBikes, availableStands, totalStands, banking, status, update, marker) {
+    constructor(name, number, address, availableBikes, availableStands, totalStands, banking, status, update, marker, book) {
         this.name = name;
         this.number = number;
-        this.address = address;
+        this.address = address; // Non utilisé
         this.availableBikes = availableBikes;
         this.availableStands = availableStands;
         this.totalStands = totalStands;
@@ -14,10 +14,9 @@ class Station {
         this.status = status;
         this.update = update;
         this.marker = marker;
+        this.book = book;
     }
 }
-
-let stations = [];
 
 // API JCDecaux
 function callAPI() {
@@ -30,35 +29,37 @@ function callAPI() {
         console.log(apiResults);
 
         let markersCluster = new L.MarkerClusterGroup();
-        for (let i = 0; i < apiResults.length; i++) {
+        let booked = false;
 
-            // Changement du texte de banking
-            if (apiResults[i].banking) {
-                banking = "Oui";
-            } else {
-                banking = "Non";
-            }
-            // Calcul de la dernière mise à jour
-            let update = '< ' + Math.ceil((new Date () - new Date(apiResults[i].last_update)) / 1000 / 60) + 'min';
+        for (let i = 0; i < apiResults.length; i++) {
 
             // Création du marker
             let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng]);
-            console.log(marker);
-            marker.addEventListener('click', showInfos)
-
-            let station = new Station(apiResults[i].name, apiResults[i].number, apiResults[i].address, apiResults[i].available_bikes, apiResults[i].available_bike_stands, apiResults[i].bike_stands, banking, apiResults[i].status, update, marker);
-            stations.push(station);
-            markersCluster.addLayer(stations[i].marker);
+            markersCluster.addLayer(marker);
             map.addLayer(markersCluster);
+            marker.addEventListener('click', showInfos);
+
+            // Bouton de réservation
+            let book = document.createElement("input");
+            book.id = 'book';
+            book.type = 'button';
+            book.value = 'Réserver à\nla borne ' + apiResults[i].number;
+            book.addEventListener('click', booking)
+
+            let station = new Station(apiResults[i].name, apiResults[i].number, apiResults[i].address, apiResults[i].available_bikes, apiResults[i].available_bike_stands, apiResults[i].bike_stands, apiResults[i].banking, apiResults[i].status, apiResults[i].last_update, marker, book);
 
             function showInfos() {
                 document.querySelector('.map__infos__name').textContent = station.name.split('-')[1];
                 document.querySelector('.map__infos__number').textContent = station.number;
-                // document.querySelector('.map__infos__address').textContent = station.address;
                 document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
                 document.querySelector('.map__infos__available-stands').textContent = station.availableStands;
                 document.querySelector('.map__infos__total-stands').textContent = station.totalStands;
-                document.querySelector('.map__infos__banking').textContent = station.banking;
+                // Changement du texte de banking
+                if (station.banking) {
+                    document.querySelector('.map__infos__banking').textContent = 'Oui';
+                } else {
+                    document.querySelector('.map__infos__banking').textContent = 'Non';
+                }
                 // Affichage du statut en couleur
                 if (station.status === "OPEN") {
                     document.querySelector('.map__infos__status').textContent = 'Ouvert';
@@ -67,7 +68,30 @@ function callAPI() {
                     document.querySelector('.map__infos__status').textContent = 'Fermé';
                     document.querySelector('.map__infos__status').style.color = '#ff3333';
                 }
-                document.querySelector('.map__infos__update').textContent = station.update;
+                // Calcul de la dernière mise à jour
+                let update = '< ' + Math.ceil((new Date () - new Date(station.update)) / 1000 / 60) + 'min';
+                document.querySelector('.map__infos__update').textContent = update;
+                // Mise en place du bouton de réservation
+                if (document.querySelector("#book")) {
+                    document.querySelector(".book-btn").removeChild(document.querySelector("#book"));
+                }
+                document.querySelector(".book-btn").appendChild(book);
+            }
+
+            function booking() {
+                if (!booked) {
+
+                    // Ouverture de la modale pour signature électronique
+                    // --> Nom, prénom, signature, case à cocher conditions..
+
+                    station.availableBikes -= 1;
+                    document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
+
+                    // Lancement du compte à rebours
+                    // Possibilité d'annuler la réservation + booked repasse à false
+
+                    booked = true;
+                } // else --> Possibilité d'annuler la réservation en cours + relance booking()
             }
             
             // let icons = document.querySelectorAll(".leaflet-marker-icon");
@@ -84,5 +108,4 @@ function callAPI() {
         }
     })
 }
-
 callAPI();
