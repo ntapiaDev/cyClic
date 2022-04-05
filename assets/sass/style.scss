@@ -56,6 +56,9 @@ body {
         #book {
             width: 120px;
             height: 75px;
+            &:hover {
+                cursor: pointer;
+            }
             &.book-abord:hover {
                 background-color: red;
                 border-color: #FFF;
@@ -70,7 +73,7 @@ body {
         left: calc(50% - 45%);
         padding: 15px;
         width: 90%;
-        height: 90vh;
+        min-height: 90vh;
         background-color: rgba(238, 238, 238, 0.9);
         border: 3px double black;
         border-radius: 3em;
@@ -96,6 +99,9 @@ body {
             input:last-child {
                 margin-top: 25px;
                 padding: 20px;
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
         &__error {
@@ -107,6 +113,9 @@ body {
             p {
                 padding: 5px;
                 margin: 5px 10px;
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
     }

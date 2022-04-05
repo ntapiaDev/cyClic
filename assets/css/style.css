@@ -68,6 +68,10 @@ body {
   height: 75px;
 }
 
+.map__infos #book:hover {
+  cursor: pointer;
+}
+
 .map__infos #book.book-abord:hover {
   background-color: red;
   border-color: #FFF;
@@ -80,7 +84,7 @@ body {
   left: calc(50% - 45%);
   padding: 15px;
   width: 90%;
-  height: 90vh;
+  min-height: 90vh;
   background-color: rgba(238, 238, 238, 0.9);
   border: 3px double black;
   border-radius: 3em;
@@ -125,6 +129,10 @@ body {
   padding: 20px;
 }
 
+.map__modale form input:last-child:hover {
+  cursor: pointer;
+}
+
 .map__modale__error {
   margin-top: 15px;
   color: red;
@@ -139,5 +147,9 @@ body {
 .map__modale__options p {
   padding: 5px;
   margin: 5px 10px;
+}
+
+.map__modale__options p:hover {
+  cursor: pointer;
 }
 /*# sourceMappingURL=style.css.map */

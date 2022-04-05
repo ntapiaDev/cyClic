@@ -48,14 +48,14 @@ function callAPI() {
             });
 
             let iconColor
-            if (apiResults[i].available_bikes > 9) {
+            if (apiResults[i].available_bikes > 5) {
                 iconColor = './assets/img/marker-icon-green.png';
-            } else if (apiResults[i].available_bikes > 4) {
-                iconColor = './assets/img/marker-icon-orange.png';
             } else if (apiResults[i].available_bikes > 0) {
-                iconColor = './assets/img/marker-icon-red.png';
-            } else {
+                iconColor = './assets/img/marker-icon-orange.png';
+            } else if (apiResults[i].status === 'CLOSED') {
                 iconColor = './assets/img/marker-icon-black.png';
+            } else {
+                iconColor = './assets/img/marker-icon-red.png';
             }
             let icon = new LeafIcon({
                 iconUrl: iconColor,
@@ -63,7 +63,7 @@ function callAPI() {
 
             // Affichage des markers sur la map (clusters)
             let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng], {icon: icon});
-            marker.bindTooltip(apiResults[i].name.split('-')[1] + ' (' + apiResults[i].available_bikes + ' <i class="fa-solid fa-person-biking"></i>)', {permanent: true, className: "map__label", offset: [3, 0] });
+            marker.bindTooltip(apiResults[i].name.split('-')[1] + ' (' + apiResults[i].available_bikes + ' <i class="fa-solid fa-person-biking"></i>)', {permanent: false, className: "map__label", offset: [3, 0] });
             markersCluster.addLayer(marker);
             map.addLayer(markersCluster);
             marker.addEventListener('click', showInfos);
@@ -182,8 +182,8 @@ function callAPI() {
                 }
                 // Sliders de présentation
                 // Tests W3C et tout...
-                // label des icons -> hover montre nom station ou nb vélos
-                // rester dans le canvas
+                // Rester dans le canvas
+                // alert et confirm?
             }
         }
     })
