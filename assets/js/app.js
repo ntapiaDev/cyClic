@@ -111,6 +111,9 @@ function callAPI() {
                 if (!booked) {
                     if (station.availableBikes > 0) {
                         document.querySelector(".map__modale").style.display = "flex";
+                        document.querySelector(".map__modale__close").addEventListener('click', function() {
+                            document.querySelector(".map__modale").style.display = "none";
+                        })
 
                         let time = 20 * 60 - 1;
                         let minutes = 20;
@@ -157,6 +160,7 @@ function callAPI() {
                                 station.availableBikes += 1;
                                 document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
                                 bookBtn.value = 'Réserver à\nla borne ' + station.number;
+                                document.querySelector(".map__modale__error").textContent = '';
                                 bookBtn.classList.remove('book-abord');
                                 bookBtn.removeEventListener('click', cancelBook);
                                 clearInterval(bookInterval);
@@ -170,13 +174,14 @@ function callAPI() {
                     }
                 // Clique sur une station où il n'y a pas déjà de réservation
                 } else if (!station.booked) {
-                    // alert("Réservation impossible, vous avez déjà une réservation en cours");
-                    cancel()
+                    if (askConfirmation()) {
+                        cancel()
+                    }
                 }
-                // else --> Possibilité d'annuler la réservation en cours + relance booking()
-
                 // Sliders de présentation
                 // Tests W3C et tout...
+                // label des icons -> hover montre nom station ou nb vélos
+                // rester dans le canvas
             }
         }
     })
@@ -215,6 +220,10 @@ function sendCanvas() {
 // Reset du canvas
 function clearCanvas() {
     canvas.width = canvas.width;
+}
+// Confirmation d'annulation
+function askConfirmation() {
+    return confirm('Voulez vous annuler votre réservation ?')
 }
 
 // Annulation de la réservation

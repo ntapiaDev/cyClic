@@ -75,6 +75,7 @@ body {
         display: none;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
 
         form {
             margin-top: 10px;
@@ -96,6 +97,10 @@ body {
         &__error {
             margin-top: 25px;
             color: red;
+        }
+        &__close {
+            margin-top: 5px;
+            display: inline;
         }
     }
 }
