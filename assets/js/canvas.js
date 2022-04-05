@@ -33,6 +33,12 @@
   
     canvas.addEventListener("mousemove", function(e) {
       mousePos = getMousePos(canvas, e);
+    //   if (drawing) {
+    //       if (e.clientX < canvas.getBoundingClientRect().x) {
+    //         e.clientX = canvas.getBoundingClientRect().x
+    //       }
+    //   }
+    //   console.log(e.clientX, e.clientY);
     }, false);
   
     // Add touch event support for mobile

@@ -3,7 +3,7 @@ const APIKEY = 'ddc4d27d871e2930d9a8a37809fcb73cefb6bbf6';
 const city = 'Rouen';
 
 class Station {
-    constructor(name, number, address, availableBikes, availableStands, totalStands, banking, status, update, marker, book) {
+    constructor(name, number, address, availableBikes, availableStands, totalStands, banking, status, update, marker, bookBtn, booked) {
         this.name = name;
         this.number = number;
         this.address = address; // Non utilisé
@@ -14,9 +14,14 @@ class Station {
         this.status = status;
         this.update = update;
         this.marker = marker;
-        this.book = book;
+        this.bookBtn = bookBtn;
+        this.booked = booked;
     }
 }
+
+let stations = [];
+let booked = false;
+let bookInterval;
 
 // API JCDecaux
 function callAPI() {
@@ -29,7 +34,6 @@ function callAPI() {
         console.log(apiResults);
 
         let markersCluster = new L.MarkerClusterGroup();
-        let booked = false;
 
         for (let i = 0; i < apiResults.length; i++) {
 
@@ -64,13 +68,14 @@ function callAPI() {
             marker.addEventListener('click', showInfos);
 
             // Bouton de réservation
-            let book = document.createElement("input");
-            book.id = 'book';
-            book.type = 'button';
-            book.value = 'Réserver à\nla borne ' + apiResults[i].number;
-            book.addEventListener('click', booking)
+            let bookBtn = document.createElement("input");
+            bookBtn.id = 'book';
+            bookBtn.type = 'button';
+            bookBtn.value = 'Réserver à\nla borne ' + apiResults[i].number;
+            bookBtn.addEventListener('click', booking)
 
-            let station = new Station(apiResults[i].name, apiResults[i].number, apiResults[i].address, apiResults[i].available_bikes, apiResults[i].available_bike_stands, apiResults[i].bike_stands, apiResults[i].banking, apiResults[i].status, apiResults[i].last_update, marker, book);
+            let station = new Station(apiResults[i].name, apiResults[i].number, apiResults[i].address, apiResults[i].available_bikes, apiResults[i].available_bike_stands, apiResults[i].bike_stands, apiResults[i].banking, apiResults[i].status, apiResults[i].last_update, marker, bookBtn, false);
+            stations.push(station);
 
             function showInfos() {
                 document.querySelector('.map__infos__name').textContent = station.name.split('-')[1];
@@ -99,7 +104,7 @@ function callAPI() {
                 if (document.querySelector("#book")) {
                     document.querySelector(".book-btn").removeChild(document.querySelector("#book"));
                 }
-                document.querySelector(".book-btn").appendChild(book);
+                document.querySelector(".book-btn").appendChild(bookBtn);
             }
 
             function booking() {
@@ -114,32 +119,32 @@ function callAPI() {
                             minutes = Math.floor(time / 60);
                             secondes = time - minutes * 60;
                             time -= 1;
-                            if (book.value !== 'Annuler ?') {
-                                book.value = minutes + ' min ' + secondes;
+                            if (bookBtn.value !== 'Annuler ?') {
+                                bookBtn.value = minutes + ' min ' + secondes;
                             }
                         }
-                        let bookInterval;
                         function confirmBook() {
                             if (formControl() === 'Formulaire accepté') {
                                 station.availableBikes -= 1;
                                 document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
-                                book.value = '20 min';
-                                book.classList.add('book-abord');
+                                bookBtn.value = '20 min';
+                                bookBtn.classList.add('book-abord');
                                 book.addEventListener('mouseover', function() {
-                                    if (booked) {
+                                    if (station.booked) {
                                         book.value = 'Annuler ?';
                                     }
                                 })
                                 book.addEventListener('mouseout', function() {
-                                    if (booked) {
+                                    if (station.booked) {
                                         book.value = minutes + ' min ' + secondes;
                                     }
                                 })
-                                book.addEventListener('click', cancelBook);
+                                bookBtn.addEventListener('click', cancelBook);
                                 bookInterval = setInterval(timer, 1000);
                                 document.querySelector(".map__modale").style.display = "none";
                                 document.querySelector('#confirm-book-btn').removeEventListener('click', confirmBook);
                                 document.querySelector(".map__modale__error").textContent = '';
+                                station.booked = true;
                                 booked = true;
                                 sendCanvas();
                                 clearCanvas();
@@ -151,10 +156,11 @@ function callAPI() {
                             if (booked) {
                                 station.availableBikes += 1;
                                 document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
-                                book.value = 'Réserver à\nla borne ' + station.number;
-                                book.classList.remove('book-abord');
-                                book.removeEventListener('click', cancelBook);
+                                bookBtn.value = 'Réserver à\nla borne ' + station.number;
+                                bookBtn.classList.remove('book-abord');
+                                bookBtn.removeEventListener('click', cancelBook);
                                 clearInterval(bookInterval);
+                                station.booked = false;
                                 booked = false;
                             }
                         }
@@ -162,7 +168,12 @@ function callAPI() {
                     } else {
                         alert("Réservation impossible, nous n'avons plus de vélo disponible à cette station");
                     }
-                } // else --> Possibilité d'annuler la réservation en cours + relance booking()
+                // Clique sur une station où il n'y a pas déjà de réservation
+                } else if (!station.booked) {
+                    // alert("Réservation impossible, vous avez déjà une réservation en cours");
+                    cancel()
+                }
+                // else --> Possibilité d'annuler la réservation en cours + relance booking()
 
                 // Sliders de présentation
                 // Tests W3C et tout...
@@ -204,4 +215,18 @@ function sendCanvas() {
 // Reset du canvas
 function clearCanvas() {
     canvas.width = canvas.width;
+}
+
+// Annulation de la réservation
+function cancel() {
+    for (let i = 0; i < stations.length; i++) {
+        if (stations[i].booked === true) {
+            stations[i].availableBikes += 1;
+            stations[i].bookBtn.value = 'Réserver à\nla borne ' + stations[i].number;
+            stations[i].bookBtn.classList.remove('book-abord');
+            clearInterval(bookInterval);
+            stations[i].booked = false;
+            booked = false;
+        }
+    }
 }
