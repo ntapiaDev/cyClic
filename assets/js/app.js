@@ -39,8 +39,10 @@ function callAPI() {
                    iconSize:     [25, 41],
                    iconAnchor:   [11, 41],
                    popupAnchor:  [0, 0]
+                   // Manque le shadow
                 }
             });
+
             let iconColor
             if (apiResults[i].available_bikes > 9) {
                 iconColor = './assets/img/marker-icon-green.png';
@@ -54,6 +56,8 @@ function callAPI() {
             let icon = new LeafIcon({
                 iconUrl: iconColor,
             });
+
+            // Affichage des markers sur la map (clusters)
             let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng], {icon: icon});
             markersCluster.addLayer(marker);
             map.addLayer(markersCluster);
@@ -107,11 +111,14 @@ function callAPI() {
                     station.availableBikes -= 1;
                     document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
 
-                    // Lancement du compte à rebours
+                    // Lancement du compte à rebours 20 min
                     // Possibilité d'annuler la réservation + booked repasse à false
 
                     booked = true;
                 } // else --> Possibilité d'annuler la réservation en cours + relance booking()
+
+                // Sliders de présentation
+                // Tests W3C et tout...
             }
         }
     })
