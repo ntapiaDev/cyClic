@@ -33,8 +33,28 @@ function callAPI() {
 
         for (let i = 0; i < apiResults.length; i++) {
 
-            // Création du marker
-            let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng]);
+            // Création des markers
+            let LeafIcon = L.Icon.extend({
+                options: {
+                   iconSize:     [25, 41],
+                   iconAnchor:   [11, 41],
+                   popupAnchor:  [0, 0]
+                }
+            });
+            let iconColor
+            if (apiResults[i].available_bikes > 9) {
+                iconColor = './assets/img/marker-icon-green.png';
+            } else if (apiResults[i].available_bikes > 4) {
+                iconColor = './assets/img/marker-icon-orange.png';
+            } else if (apiResults[i].available_bikes > 0) {
+                iconColor = './assets/img/marker-icon-red.png';
+            } else {
+                iconColor = './assets/img/marker-icon-black.png';
+            }
+            let icon = new LeafIcon({
+                iconUrl: iconColor,
+            });
+            let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng], {icon: icon});
             markersCluster.addLayer(marker);
             map.addLayer(markersCluster);
             marker.addEventListener('click', showInfos);
@@ -82,7 +102,7 @@ function callAPI() {
                 if (!booked) {
 
                     // Ouverture de la modale pour signature électronique
-                    // --> Nom, prénom, signature, case à cocher conditions..
+                    // --> Nom, prénom, signature, case à cocher conditions.. rgpd
 
                     station.availableBikes -= 1;
                     document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
@@ -93,18 +113,6 @@ function callAPI() {
                     booked = true;
                 } // else --> Possibilité d'annuler la réservation en cours + relance booking()
             }
-            
-            // let icons = document.querySelectorAll(".leaflet-marker-icon");
-
-            // if (apiResults[i].available_bikes > 9) {
-            //     icons[i].src = "./assets/img/marker-icon-green.png";
-            // } else if (apiResults[i].available_bikes > 4) {
-            //     icons[i].src = "./assets/img/marker-icon-orange.png";
-            // } else if (apiResults[i].available_bikes > 0) {
-            //     icons[i].src = "./assets/img/marker-icon-red.png";
-            // } else {
-            //     icons[i].src = "./assets/img/marker-icon-black.png";
-            // }
         }
     })
 }
