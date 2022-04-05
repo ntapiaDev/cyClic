@@ -116,4 +116,9 @@ body {
   margin-top: 25px;
   padding: 20px;
 }
+
+.map__modale__error {
+  margin-top: 25px;
+  color: red;
+}
 /*# sourceMappingURL=style.css.map */

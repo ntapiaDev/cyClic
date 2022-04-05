@@ -109,7 +109,7 @@ function callAPI() {
 
                         let time = 20 * 60 - 1;
                         let minutes = 20;
-                        let secondes = 00;
+                        let secondes = 0;
                         function timer() {
                             minutes = Math.floor(time / 60);
                             secondes = time - minutes * 60;
@@ -120,25 +120,32 @@ function callAPI() {
                         }
                         let bookInterval;
                         function confirmBook() {
-                            station.availableBikes -= 1;
-                            document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
-                            book.value = '20 min';
-                            book.classList.add('book-abord');
-                            book.addEventListener('mouseover', function() {
-                                if (booked) {
-                                    book.value = 'Annuler ?';
-                                }
-                            })
-                            book.addEventListener('mouseout', function() {
-                                if (booked) {
-                                    book.value = minutes + ' min ' + secondes;
-                                }
-                            })
-                            book.addEventListener('click', cancelBook);
-                            bookInterval = setInterval(timer, 1000);
-                            document.querySelector(".map__modale").style.display = "none";
-                            document.querySelector('#confirm-book-btn').removeEventListener('click', confirmBook);
-                            booked = true;
+                            if (formControl() === 'Formulaire accepté') {
+                                station.availableBikes -= 1;
+                                document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
+                                book.value = '20 min';
+                                book.classList.add('book-abord');
+                                book.addEventListener('mouseover', function() {
+                                    if (booked) {
+                                        book.value = 'Annuler ?';
+                                    }
+                                })
+                                book.addEventListener('mouseout', function() {
+                                    if (booked) {
+                                        book.value = minutes + ' min ' + secondes;
+                                    }
+                                })
+                                book.addEventListener('click', cancelBook);
+                                bookInterval = setInterval(timer, 1000);
+                                document.querySelector(".map__modale").style.display = "none";
+                                document.querySelector('#confirm-book-btn').removeEventListener('click', confirmBook);
+                                document.querySelector(".map__modale__error").textContent = '';
+                                booked = true;
+                                sendCanvas();
+                                clearCanvas();
+                            } else {
+                                document.querySelector(".map__modale__error").textContent = formControl();
+                            }
                         }
                         function cancelBook() {
                             if (booked) {
@@ -163,4 +170,38 @@ function callAPI() {
         }
     })
 }
+
 callAPI();
+
+let canvas = document.getElementById("signature");
+// Controle du formulaire
+function formControl() {
+    // Regex :
+    let regexName = /[^a-zA-ZÀ-ÿ ]/;
+    // Controle du canvas :
+    function isCanvasBlank(canvas) {
+        return !canvas.getContext('2d')
+        .getImageData(0, 0, canvas.width, canvas.height).data
+        .some(channel => channel !== 0);
+    }
+
+    if (regexName.test(document.querySelector("#name").value) || document.querySelector("#name").value.length < 3) {
+        return 'Merci de saisir un nom valide';
+    } else if (isCanvasBlank(canvas)) {
+        return "Merci d'appliquer votre signature numérique";
+    } else if (!document.querySelector("#gdpr").checked) {
+        return "Merci d'accepter le règlement général sur la protection des données";
+    } else {
+        return 'Formulaire accepté';
+    }
+}
+// Envoie du canvas
+function sendCanvas() {
+    let dataUrl = canvas.toDataURL();
+    let signature = dataUrl;
+    console.log(signature);
+}
+// Reset du canvas
+function clearCanvas() {
+    canvas.width = canvas.width;
+}

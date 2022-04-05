@@ -93,5 +93,9 @@ body {
                 padding: 20px;
             }
         }
+        &__error {
+            margin-top: 25px;
+            color: red;
+        }
     }
 }

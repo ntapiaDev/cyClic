@@ -111,9 +111,7 @@
       renderCanvas();
     })();
   
-    function clearCanvas() {
-      canvas.width = canvas.width;
-    }
+    
   
     // Set up the UI
     // var sigText = document.getElementById("sig-dataUrl");
@@ -126,18 +124,17 @@
     //   sigImage.setAttribute("src", "");
     // }, false);
     submitBtn.addEventListener("click", function(e) {
-      var dataUrl = canvas.toDataURL();
-      let signature = dataUrl;
-      console.log(signature);
-      console.log(isCanvasBlank(canvas));
+    //   var dataUrl = canvas.toDataURL();
+    //   let signature = dataUrl;
+    //   console.log(signature);
+    //   console.log(isCanvasBlank(canvas));
     //   sigImage.setAttribute("src", dataUrl);
-      clearCanvas();
     }, false);
 
-    function isCanvasBlank(canvas) {
-        return !canvas.getContext('2d')
-          .getImageData(0, 0, canvas.width, canvas.height).data
-          .some(channel => channel !== 0);
-      }
+    // function isCanvasBlank(canvas) {
+    //     return !canvas.getContext('2d')
+    //       .getImageData(0, 0, canvas.width, canvas.height).data
+    //       .some(channel => channel !== 0);
+    //   }
   
   })();
