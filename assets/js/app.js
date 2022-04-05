@@ -112,6 +112,7 @@ function callAPI() {
                 if (!booked) {
                     if (station.availableBikes > 0) {
                         document.querySelector(".map__modale").style.display = "flex";
+                        document.querySelector(".map__modale__clear").addEventListener('click', clearCanvas)
                         document.querySelector(".map__modale__close").addEventListener('click', function() {
                             document.querySelector(".map__modale").style.display = "none";
                         })

@@ -99,12 +99,15 @@ body {
             }
         }
         &__error {
-            margin-top: 25px;
-            color: red;
+            margin-top: 15px;
+            color: red
         }
-        &__close {
-            margin-top: 5px;
-            display: inline;
+        &__options {
+            display: flex;
+            p {
+                padding: 5px;
+                margin: 5px 10px;
+            }
         }
     }
 }

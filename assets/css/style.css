@@ -126,12 +126,18 @@ body {
 }
 
 .map__modale__error {
-  margin-top: 25px;
+  margin-top: 15px;
   color: red;
 }
 
-.map__modale__close {
-  margin-top: 5px;
-  display: inline;
+.map__modale__options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.map__modale__options p {
+  padding: 5px;
+  margin: 5px 10px;
 }
 /*# sourceMappingURL=style.css.map */
