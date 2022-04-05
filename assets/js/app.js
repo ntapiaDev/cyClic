@@ -63,6 +63,7 @@ function callAPI() {
 
             // Affichage des markers sur la map (clusters)
             let marker = L.marker([apiResults[i].position.lat, apiResults[i].position.lng], {icon: icon});
+            marker.bindTooltip(apiResults[i].name.split('-')[1] + ' (' + apiResults[i].available_bikes + ' <i class="fa-solid fa-person-biking"></i>)', {permanent: true, className: "map__label", offset: [3, 0] });
             markersCluster.addLayer(marker);
             map.addLayer(markersCluster);
             marker.addEventListener('click', showInfos);

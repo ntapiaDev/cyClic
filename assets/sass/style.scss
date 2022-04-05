@@ -28,6 +28,10 @@ body {
             cursor: pointer;
         }
     }
+    &__label {
+        padding: 1px 3px;
+        border-radius: 10px;
+    }
 
     &__infos {
         padding: 10px;
