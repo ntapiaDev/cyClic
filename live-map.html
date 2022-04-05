@@ -57,6 +57,21 @@
                 </div>
             </div>
         </section>
+        <!-- Modale -->
+        <section class="map__modale">
+            <h2>Merci de confirmer votre réservation</h2>
+            <form action="#">
+                <label for="name">Votre nom :</label>
+                <input type="text" name="name" id="name">
+                <label for="signature">Veuillez signer ici :</label>
+                <canvas id="signature"></canvas>
+                <div class="gdpr-container">
+                    <input type="checkbox" name="gdpr" id="gdpr">
+                    <label for="gdpr">J'accepte que mes données soient utilisées pour être revendues à des tiers et de recevoir du spam pendant les prochaines dizaines d'années.</label>
+                </div>
+                <input type="button" id="confirm-book-btn" value="Réserver mon vélo !">
+            </form>
+        </section>
     </main>
 
     <footer></footer>
@@ -69,6 +84,7 @@
     <script src="./assets/js/leaflet.markercluster.js"></script>
 
     <script src="./assets/js/map.js"></script>
+    <script src="./assets/js/canvas.js"></script>
     <script src="./assets/js/app.js"></script>
 </body>
 </html>

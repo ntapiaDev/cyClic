@@ -62,4 +62,58 @@ body {
   width: 120px;
   height: 75px;
 }
+
+.map__infos #book.book-abord:hover {
+  background-color: red;
+  border-color: #FFF;
+  color: #FFF;
+}
+
+.map__modale {
+  position: absolute;
+  top: calc(50% - 45vh);
+  left: calc(50% - 45%);
+  padding: 15px;
+  width: 90%;
+  height: 90vh;
+  background-color: rgba(238, 238, 238, 0.9);
+  border: 3px double black;
+  border-radius: 3em;
+  z-index: 1000;
+  text-align: center;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.map__modale form {
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.map__modale form label {
+  margin: 10px 5px;
+}
+
+.map__modale form canvas {
+  margin-bottom: 15px;
+  background-color: #FFF;
+  border: 1px solid black;
+}
+
+.map__modale form input:last-child {
+  margin-top: 25px;
+  padding: 20px;
+}
 /*# sourceMappingURL=style.css.map */

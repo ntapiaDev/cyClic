@@ -104,17 +104,57 @@ function callAPI() {
 
             function booking() {
                 if (!booked) {
+                    if (station.availableBikes > 0) {
+                        document.querySelector(".map__modale").style.display = "flex";
 
-                    // Ouverture de la modale pour signature électronique
-                    // --> Nom, prénom, signature, case à cocher conditions.. rgpd
-
-                    station.availableBikes -= 1;
-                    document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
-
-                    // Lancement du compte à rebours 20 min
-                    // Possibilité d'annuler la réservation + booked repasse à false
-
-                    booked = true;
+                        let time = 20 * 60 - 1;
+                        let minutes = 20;
+                        let secondes = 00;
+                        function timer() {
+                            minutes = Math.floor(time / 60);
+                            secondes = time - minutes * 60;
+                            time -= 1;
+                            if (book.value !== 'Annuler ?') {
+                                book.value = minutes + ' min ' + secondes;
+                            }
+                        }
+                        let bookInterval;
+                        function confirmBook() {
+                            station.availableBikes -= 1;
+                            document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
+                            book.value = '20 min';
+                            book.classList.add('book-abord');
+                            book.addEventListener('mouseover', function() {
+                                if (booked) {
+                                    book.value = 'Annuler ?';
+                                }
+                            })
+                            book.addEventListener('mouseout', function() {
+                                if (booked) {
+                                    book.value = minutes + ' min ' + secondes;
+                                }
+                            })
+                            book.addEventListener('click', cancelBook);
+                            bookInterval = setInterval(timer, 1000);
+                            document.querySelector(".map__modale").style.display = "none";
+                            document.querySelector('#confirm-book-btn').removeEventListener('click', confirmBook);
+                            booked = true;
+                        }
+                        function cancelBook() {
+                            if (booked) {
+                                station.availableBikes += 1;
+                                document.querySelector('.map__infos__available-bikes').textContent = station.availableBikes;
+                                book.value = 'Réserver à\nla borne ' + station.number;
+                                book.classList.remove('book-abord');
+                                book.removeEventListener('click', cancelBook);
+                                clearInterval(bookInterval);
+                                booked = false;
+                            }
+                        }
+                        document.querySelector('#confirm-book-btn').addEventListener('click', confirmBook);
+                    } else {
+                        alert("Réservation impossible, nous n'avons plus de vélo disponible à cette station");
+                    }
                 } // else --> Possibilité d'annuler la réservation en cours + relance booking()
 
                 // Sliders de présentation
